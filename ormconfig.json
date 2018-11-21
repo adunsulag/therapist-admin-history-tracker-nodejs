@@ -1,6 +1,7 @@
 {
    "synchronize": true,
-   "type": "pg",
+   "type": "postgres",
+   "url": "postgres://mormhnnaipvlgh:9d1d523b5d8734c4469a950a6bb03397e830a9e15dd9ce6c3037ced946a9956b@ec2-54-235-133-42.compute-1.amazonaws.com:5432/d8rrivtp7k4j5o",
    "logging": false,
    "entities": [
       "src/entity/**/*.ts"
@@ -15,5 +16,6 @@
       "entitiesDir": "src/entity",
       "migrationsDir": "src/migration",
       "subscribersDir": "src/subscriber"
-   }
+   },
+   "extra": { "ssl" : true }
 }
