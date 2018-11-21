@@ -1,8 +1,9 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne} from "typeorm";
 import { SystemUser } from "./SystemUser";
+import { AuditedEntity } from "./AuditedEntity";
 
 @Entity()
-export class Client {
+export class Client extends AuditedEntity {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -11,20 +12,5 @@ export class Client {
     name: string;
 
     @Column()
-    isActive : boolean;
-
-    // @JoinColumn()
-    // @OneToOne(type => SystemUser)
-    // createdBy :SystemUser;
-
-    @JoinColumn()
-    @OneToOne(type => SystemUser, nullable => false)
-    lastUpdatedBy :SystemUser;
-
-    @Column()
-    creationDate : Date;
-
-    @Column()
-    lastUpdatedDate : Date;
-
+    isActive : boolean = true;
 }

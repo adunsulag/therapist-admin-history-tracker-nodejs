@@ -5,6 +5,7 @@ import * as bodyParser from "body-parser";
 import {Request, Response} from "express";
 import {Routes} from "./routes";
 import {SystemUser} from "./entity/SystemUser";
+import { Client } from "./entity/Client";
 
 
 getConnectionOptions().then(async options => {
@@ -21,10 +22,21 @@ getConnectionOptions().then(async options => {
 		(app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
 		    const result = (new (route.controller as any))[route.action](req, res, next);
 		    if (result instanceof Promise) {
-			result.then(result => result !== null && result !== undefined ? res.send(result) : undefined);
-
+				result.then(result => {
+					if (result !== null && result !== undefined) {
+						res.send(result);
+					}
+					else {
+						res.status(404);
+						res.json({error: 'Result was not found'});
+					}
+				})
+				.catch((error) => {
+					res.status(500);
+					res.json({error: error.message});
+				});
 		    } else if (result !== null && result !== undefined) {
-			res.json(result);
+				res.json(result);
 		    }
 		});
 	    });
@@ -35,17 +47,28 @@ getConnectionOptions().then(async options => {
 	    // start express server
 	    app.listen(3000);
 
-	    // insert new users for test
+		// insert new users for test
+		let systemUser = Object.assign(new SystemUser(), {id: 1});
+		let currentDate = new Date();
 	    await connection.manager.save(connection.manager.create(SystemUser, {
-		firstName: "Timber",
-		lastName: "Saw",
-		age: 27
+			id: 1
+			,identityId: ''
+			,email: 'stephen@nielson.org'
+			,lastUpdatedBy: systemUser
+			,createdBy: systemUser
+			,lastUpdatedDate: currentDate
+			,creationDate: currentDate
 	    }));
-	    await connection.manager.save(connection.manager.create(SystemUser, {
-		firstName: "Phantom",
-		lastName: "Assassin",
-		age: 24
-	    }));
+		
+		await connection.manager.save(connection.manager.create(Client, {
+			id: 1
+			,name: "Test Client 1"
+		}));
+
+		await connection.manager.save(connection.manager.create(Client, {
+			id: 1
+			,name: "Test Client 2"
+		}));
 
 	    console.log("Express server has started on port 3000. Open http://localhost:3000/users to see results");
 	});

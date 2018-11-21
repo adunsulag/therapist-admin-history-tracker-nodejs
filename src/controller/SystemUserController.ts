@@ -1,26 +1,17 @@
 import {getRepository} from "typeorm";
 import {NextFunction, Request, Response} from "express";
 import {SystemUser} from "../entity/SystemUser";
+import { ClientResponse } from "http";
 
 export class SystemUserController {
 
     private userRepository = getRepository(SystemUser);
 
-    async all(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.find();
+    async login(request: Request, response: ClientResponse, next: NextFunction) {
+
     }
 
-    async one(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.findOne(request.params.id);
+    async logout(request: Request, response: ClientResponse, next: NextFunction) {
+        
     }
-
-    async save(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.save(request.body);
-    }
-
-    async remove(request: Request, response: Response, next: NextFunction) {
-        let userToRemove = await this.userRepository.findOne(request.params.id);
-        await this.userRepository.remove(userToRemove);
-    }
-
 }
