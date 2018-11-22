@@ -1,8 +1,9 @@
 import {Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne, ManyToOne} from "typeorm";
+import { IAuditedEntity } from "./IAuditedEntity";
 
 @Entity()
-export class SystemUser {
-    
+export class SystemUser implements IAuditedEntity {
+   
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -29,5 +30,10 @@ export class SystemUser {
 
     @Column()
     lastUpdatedDate : Date;
+
+    auditName(): string {
+        return "SystemUser";
+    }
+    
 
 }

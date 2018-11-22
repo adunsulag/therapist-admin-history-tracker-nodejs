@@ -11,4 +11,8 @@ export class Therapist extends AuditedEntity {
 
     @Column()
     isActive : boolean;
+
+    public auditName() : string {
+        return "Therapist";
+    }
 }

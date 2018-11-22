@@ -32,6 +32,7 @@ getConnectionOptions().then(async options => {
 					}
 				})
 				.catch((error) => {
+					console.error(error);
 					res.status(500);
 					res.json({error: error.message});
 				});
@@ -48,7 +49,7 @@ getConnectionOptions().then(async options => {
 	    app.listen(3000);
 
 		// insert new users for test
-		let systemUser = Object.assign(new SystemUser(), {id: 1});
+		let systemUser = Object.assign(new SystemUser(), {id: 1, email: 'stephen@nielson.org'});
 		let currentDate = new Date();
 	    await connection.manager.save(connection.manager.create(SystemUser, {
 			id: 1
@@ -61,13 +62,11 @@ getConnectionOptions().then(async options => {
 	    }));
 		
 		await connection.manager.save(connection.manager.create(Client, {
-			id: 1
-			,name: "Test Client 1"
+			name: "Test Client 1"
 		}));
 
 		await connection.manager.save(connection.manager.create(Client, {
-			id: 1
-			,name: "Test Client 2"
+			name: "Test Client 2"
 		}));
 
 	    console.log("Express server has started on port 3000. Open http://localhost:3000/users to see results");

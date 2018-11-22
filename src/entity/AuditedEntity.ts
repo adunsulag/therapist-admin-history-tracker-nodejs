@@ -1,8 +1,9 @@
 import { JoinColumn, ManyToOne, Column, BeforeInsert, BeforeUpdate } from "typeorm";
 import { SystemUser } from "./SystemUser";
 import { AuthService } from "../services/AuthService";
+import { IAuditedEntity } from "./IAuditedEntity";
 
-export abstract class AuditedEntity {
+export abstract class AuditedEntity implements IAuditedEntity {
 
     @JoinColumn()
     @ManyToOne(type => SystemUser, nullable => false)
@@ -18,6 +19,9 @@ export abstract class AuditedEntity {
     @Column()
     lastUpdatedDate : Date;
 
+    abstract id:number;
+    abstract auditName() : string;
+
     @BeforeInsert()
     async __setCreationData()
     {
@@ -26,6 +30,7 @@ export abstract class AuditedEntity {
         let date = new Date();
         this.setCreation(user, date);
         this.setLastUpdate(user, date);
+        return Promise.resolve();
     }
 
     @BeforeUpdate()
@@ -35,6 +40,7 @@ export abstract class AuditedEntity {
         let user = await service.getLoggedInSystemUser();
         let date = new Date();
         this.setLastUpdate(user, date);
+        return Promise.resolve();
     }
 
     public setLastUpdate(updater:SystemUser, date:Date) {

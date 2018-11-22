@@ -13,4 +13,8 @@ export class Client extends AuditedEntity {
 
     @Column()
     isActive : boolean = true;
+    
+    public auditName() : string {
+        return "Client";
+    }
 }
