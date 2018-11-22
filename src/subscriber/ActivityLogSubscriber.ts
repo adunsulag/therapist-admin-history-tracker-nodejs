@@ -60,7 +60,11 @@ export class ActivityLogSubscriber implements EntitySubscriberInterface {
     async afterLoad(entity: IAuditedEntity) {
         console.log("inside afterLoad");
         console.log(entity);
-        if (this.shouldSkipEntity(entity)) {
+        // for now we will skip SELECT statements on the fact that the SystemUser was viewed
+        // it creates a circular cycle that blows up the server.
+        // TODO: stephen figure out a way to handle the circular dependency here with SystemUser
+        // we still want to see SELECT statements with SystemUser
+        if (entity.auditName() == "SystemUser" || this.shouldSkipEntity(entity)) {
             return;
         }
         let user = await (new AuthService()).getLoggedInSystemUser();
