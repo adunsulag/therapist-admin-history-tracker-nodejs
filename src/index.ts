@@ -51,23 +51,23 @@ getConnectionOptions().then(async options => {
 		// insert new users for test
 		let systemUser = Object.assign(new SystemUser(), {id: 1, email: 'stephen@nielson.org'});
 		let currentDate = new Date();
-	    await connection.manager.save(connection.manager.create(SystemUser, {
-			id: 1
-			,identityId: ''
-			,email: 'stephen@nielson.org'
-			,lastUpdatedBy: systemUser
-			,createdBy: systemUser
-			,lastUpdatedDate: currentDate
-			,creationDate: currentDate
-	    }));
+	    // await connection.manager.save(connection.manager.create(SystemUser, {
+		// 	id: 1
+		// 	,identityId: ''
+		// 	,email: 'stephen@nielson.org'
+		// 	,lastUpdatedBy: systemUser
+		// 	,createdBy: systemUser
+		// 	,lastUpdatedDate: currentDate
+		// 	,creationDate: currentDate
+	    // }));
 		
-		await connection.manager.save(connection.manager.create(Client, {
-			name: "Test Client 1"
-		}));
+		// await connection.manager.save(connection.manager.create(Client, {
+		// 	name: "Test Client 1"
+		// }));
 
-		await connection.manager.save(connection.manager.create(Client, {
-			name: "Test Client 2"
-		}));
+		// await connection.manager.save(connection.manager.create(Client, {
+		// 	name: "Test Client 2"
+		// }));
 
 	    console.log("Express server has started on port 3000. Open http://localhost:3000/users to see results");
 	});

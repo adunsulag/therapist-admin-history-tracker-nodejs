@@ -10,7 +10,7 @@ export class Therapist extends AuditedEntity {
     name: string;
 
     @Column()
-    isActive : boolean;
+    isActive : boolean = true;
 
     public auditName() : string {
         return "Therapist";

@@ -1,5 +1,6 @@
 import {SystemUserController} from "./controller/SystemUserController";
 import {ClientController} from "./controller/ClientController";
+import { TherapistController } from "./controller/TherapistController";
 
 export const Routes = [
 {
@@ -50,6 +51,35 @@ export const Routes = [
     method: "delete",
     route: "/clients/:id",
     controller: ClientController,
+    action: "remove"
+}
+// therapists
+,{
+    method: "get",
+    route: "/therapists",
+    controller: TherapistController,
+    action: "all"
+}, {
+    method: "get",
+    route: "/therapists/:id",
+    controller: TherapistController,
+    action: "one"
+}, {
+    method: "post",
+    route: "/therapists",
+    controller: TherapistController,
+    action: "create"
+}
+, {
+    method: "post",
+    route: "/therapists/:id",
+    controller: TherapistController,
+    action: "save"
+}
+, {
+    method: "delete",
+    route: "/therapists/:id",
+    controller: TherapistController,
     action: "remove"
 }
 ];

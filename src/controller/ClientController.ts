@@ -6,7 +6,6 @@ import { AuthService } from "../services/AuthService";
 export class ClientController {
 
     private repository = getRepository(Client);
-    private authService = new AuthService();
 
     async all(request: Request, response: Response, next: NextFunction) {
         return this.repository.find();
@@ -37,8 +36,6 @@ export class ClientController {
 
         console.log("Changing entity name from ", entity.name, " to ", name);
         entity.name = name;
-        let requestor = await this.authService.getLoggedInSystemUser();
-
         return this.repository.save(entity);
     }
 
@@ -49,11 +46,8 @@ export class ClientController {
         }
        
         console.log("Create entity with ", name);
-        const requestor = await this.authService.getLoggedInSystemUser();
         let entity = new Client();
         entity.name = name;
-        entity.setLastUpdate(requestor, new Date());
-        entity.setCreation(requestor, new Date());
         return this.repository.save(entity);
     }
 

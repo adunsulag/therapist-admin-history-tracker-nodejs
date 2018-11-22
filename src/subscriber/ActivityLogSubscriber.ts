@@ -56,15 +56,16 @@ export class ActivityLogSubscriber implements EntitySubscriberInterface {
         return this.createLog("DELETE", notes, entity, event.manager.getRepository(ActivityLog), user);
     }
 
-    async afterLoad(event: any) {
+    // TODO: stephen need to figure out why we aren't logging these entities.
+    async afterLoad(entity: IAuditedEntity) {
         console.log("inside afterLoad");
-        if (this.shouldSkipEntity(event.entity)) {
+        console.log(entity);
+        if (this.shouldSkipEntity(entity)) {
             return;
         }
-        let entity:IAuditedEntity = event.entity;
         let user = await (new AuthService()).getLoggedInSystemUser();
-        let notes = entity.auditName() + "[" + entity.id +"] was updated by " + user.email;
-        return this.createLog("SELECT", notes, entity, event.manager.getRepository(ActivityLog), user);
+        let notes = entity.auditName() + "[" + entity.id +"] was viewed by " + user.email;
+        return this.createLog("SELECT", notes, entity, getRepository(ActivityLog), user);
     }
 
     private createLog(action, notes, entity:IAuditedEntity, repo:any, actionUser?:SystemUser) {
@@ -79,16 +80,18 @@ export class ActivityLogSubscriber implements EntitySubscriberInterface {
     }
 
     private shouldSkipEntity(entity:any) {
-        console.log("skipping over entity");
         // TODO: stephen is there a better way to handle this?
         if (!(entity && entity.auditName)) {
+            console.log("skipping over entity");
             return true;
         }
         else if (entity.hasOwnProperty('tableName') 
         || entity.hasOwnProperty('tableId')) {
+            console.log("skipping over entity");
             return true;
         }
 
+        console.log("not skipping over entity");
         return false;
     }
     
