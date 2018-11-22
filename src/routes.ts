@@ -1,85 +1,115 @@
 import {SystemUserController} from "./controller/SystemUserController";
 import {ClientController} from "./controller/ClientController";
 import { TherapistController } from "./controller/TherapistController";
+import { AppointmentController } from "./controller/AppointmentController";
 
 export const Routes = [
 {
     method: "get",
-    route: "/users",
+    route: "/user",
     controller: SystemUserController,
     action: "all"
 }, {
     method: "get",
-    route: "/users/:id",
+    route: "/user/:id",
     controller: SystemUserController,
     action: "one"
 }, {
     method: "post",
-    route: "/users",
+    route: "/user",
     controller: SystemUserController,
     action: "save"
 }, {
     method: "delete",
-    route: "/users",
+    route: "/user",
     controller: SystemUserController,
     action: "remove"
 }
 // clients
 ,{
     method: "get",
-    route: "/clients",
+    route: "/client",
     controller: ClientController,
     action: "all"
 }, {
     method: "get",
-    route: "/clients/:id",
+    route: "/client/:id",
     controller: ClientController,
     action: "one"
 }, {
     method: "post",
-    route: "/clients",
+    route: "/client",
     controller: ClientController,
     action: "create"
 }
 , {
     method: "post",
-    route: "/clients/:id",
+    route: "/client/:id",
     controller: ClientController,
     action: "save"
 }
 , {
     method: "delete",
-    route: "/clients/:id",
+    route: "/client/:id",
     controller: ClientController,
     action: "remove"
 }
 // therapists
 ,{
     method: "get",
-    route: "/therapists",
+    route: "/therapist",
     controller: TherapistController,
     action: "all"
 }, {
     method: "get",
-    route: "/therapists/:id",
+    route: "/therapist/:id",
     controller: TherapistController,
     action: "one"
 }, {
     method: "post",
-    route: "/therapists",
+    route: "/therapist",
     controller: TherapistController,
     action: "create"
 }
 , {
     method: "post",
-    route: "/therapists/:id",
+    route: "/therapist/:id",
     controller: TherapistController,
     action: "save"
 }
 , {
     method: "delete",
-    route: "/therapists/:id",
+    route: "/therapist/:id",
     controller: TherapistController,
+    action: "remove"
+}
+// appointments
+,{
+    method: "get",
+    route: "/appointment",
+    controller: AppointmentController,
+    action: "all"
+}, {
+    method: "get",
+    route: "/appointment/:id",
+    controller: AppointmentController,
+    action: "one"
+}, {
+    method: "post",
+    route: "/appointment",
+    controller: AppointmentController,
+    action: "create"
+}
+, {
+    method: "post",
+    route: "/appointment/:id",
+    controller: AppointmentController,
+    action: "save"
+}
+, {
+    method: "delete",
+    route: "/appointment/:id",
+    controller: AppointmentController,
     action: "remove"
 }
 ];

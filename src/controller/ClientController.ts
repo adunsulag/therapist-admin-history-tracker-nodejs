@@ -16,7 +16,7 @@ export class ClientController {
         if (isNaN(id)) {
             throw new Error("Invalid id");
         }
-        return this.repository.findOne(id);
+        return this.repository.findOne(id, { relations: ["appointments"] });
     }
 
     async save(request: Request, response: Response, next: NextFunction) {
@@ -36,7 +36,9 @@ export class ClientController {
 
         console.log("Changing entity name from ", entity.name, " to ", name);
         entity.name = name;
-        return this.repository.save(entity);
+        return this.repository.save(entity).then(client => {
+            return this.repository.findOne(client.id, { relations: ["appointments"] });
+        });
     }
 
     async create(request: Request, response: Response, next: NextFunction) {
@@ -48,7 +50,9 @@ export class ClientController {
         console.log("Create entity with ", name);
         let entity = new Client();
         entity.name = name;
-        return this.repository.save(entity);
+        return this.repository.save(entity).then(client => {
+            return this.repository.findOne(client.id, { relations: ["appointments"] });
+        });
     }
 
     async remove(request: Request, response: Response, next: NextFunction) {

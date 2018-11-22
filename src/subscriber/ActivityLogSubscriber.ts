@@ -64,7 +64,9 @@ export class ActivityLogSubscriber implements EntitySubscriberInterface {
         // it creates a circular cycle that blows up the server.
         // TODO: stephen figure out a way to handle the circular dependency here with SystemUser
         // we still want to see SELECT statements with SystemUser
-        if (entity.auditName() == "SystemUser" || this.shouldSkipEntity(entity)) {
+        // if it's a proxy object it will just have the format of {id: <number>} which doesn't match the interface...
+        // not sure why they don't hydrate a full object... seems wierd.
+        if ((entity.auditName && entity.auditName() == "SystemUser") || this.shouldSkipEntity(entity)) {
             return;
         }
         let user = await (new AuthService()).getLoggedInSystemUser();
