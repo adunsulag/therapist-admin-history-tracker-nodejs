@@ -11,7 +11,7 @@ export class AppointmentController {
     private repository = getRepository(Appointment);
     private connectionManager = getConnectionManager();
     async all(request: Request, response: Response, next: NextFunction) {
-        return this.repository.find();
+        return this.repository.find({relations: ["client", "therapist"]}).then(appts => appts.map(a => this.toDTO(a)));
     }
 
     async one(request: Request, response: Response, next: NextFunction) {
@@ -19,7 +19,19 @@ export class AppointmentController {
         if (isNaN(id)) {
             throw new Error("Invalid id");
         }
-        return this.repository.findOne(id);
+        return this.repository.findOne(id, {relations: ["client", "therapist"]}).then(appt => this.toDTO(appt));
+    }
+
+    private toDTO(appt:Appointment) {
+        return {
+            id: appt.id
+            ,clientID: appt.client.id
+            ,clientName: appt.client.name
+            ,therapistID: appt.therapist.id
+            ,therapistName: appt.therapist.name
+            ,startDate: appt.startDate
+            ,endDate: appt.endDate
+        };
     }
 
     async save(request: Request, response: Response, next: NextFunction) {
@@ -60,7 +72,7 @@ export class AppointmentController {
         }
 
         Object.assign(entity, {client: client, therapist: therapist, startDate: startDate, endDate: endDate, status: status});
-        return this.repository.save(entity);
+        return this.repository.save(entity).then(entity => this.toDTO(entity));
     }
 
     async create(request: Request, response: Response, next: NextFunction) {
@@ -95,7 +107,7 @@ export class AppointmentController {
         }
 
         Object.assign(entity, {client: client, therapist: therapist, startDate: startDate, endDate: endDate, status: status});
-        return this.repository.save(entity);
+        return this.repository.save(entity).then(entity => this.toDTO(entity));
     }
 
     async remove(request: Request, response: Response, next: NextFunction) {
@@ -111,9 +123,5 @@ export class AppointmentController {
         let removedEntity = await this.repository.remove(entity);
         console.log("Removed entity was ", removedEntity);
         return {};
-    }
-
-    private validateAppointment(request: Request) {
-
     }
 }
