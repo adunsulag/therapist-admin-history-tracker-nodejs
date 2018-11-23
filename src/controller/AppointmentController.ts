@@ -19,7 +19,7 @@ export class AppointmentController {
         if (isNaN(id)) {
             throw new Error("Invalid id");
         }
-        return this.repository.findOne(id, {relations: ["client", "therapist"]}).then(appt => this.toDTO(appt));
+        return this.repository.findOne(id, {relations: ["client", "therapist"]}).then(appt => appt ? this.toDTO(appt) : appt );
     }
 
     private toDTO(appt:Appointment) {

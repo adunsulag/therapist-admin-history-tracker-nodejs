@@ -1,6 +1,7 @@
 import {getRepository, Entity, getConnectionManager} from "typeorm";
 import {NextFunction, Request, Response} from "express";
 import { ActivityLog } from "../entity/ActivityLog";
+import { ActivityLogToDTO } from "../services/ActivityLogToDTO";
 
 export class ActivityLogController {
 
@@ -44,13 +45,7 @@ export class ActivityLogController {
         // translate it to the API the frontend is expecting.
         return findPromise.then((logs) => {
             return logs.map((l) => {
-                return {
-                    date: l.creationDate
-                    ,tableName: l.tableName
-                    ,tableID: l.tableId
-                    ,notes: l.notes
-                    ,systemUserEmail: l.createdBy ? l.createdBy.email : "<createdBy Missing>"
-                };
+                return ActivityLogToDTO.toDTO(l);
             });
         });
     }
