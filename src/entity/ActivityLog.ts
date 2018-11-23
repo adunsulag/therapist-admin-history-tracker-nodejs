@@ -19,10 +19,7 @@ export class ActivityLog {
 
     @Column()
     notes: string;
-
-    @Column()
-    isActive : boolean = true;
-
+    
     @JoinColumn()
     @ManyToOne(type => SystemUser, nullable => false)
     createdBy :SystemUser;

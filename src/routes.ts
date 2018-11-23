@@ -2,6 +2,7 @@ import {SystemUserController} from "./controller/SystemUserController";
 import {ClientController} from "./controller/ClientController";
 import { TherapistController } from "./controller/TherapistController";
 import { AppointmentController } from "./controller/AppointmentController";
+import { ActivityLogController } from "./controller/ActivityLogController";
 
 export const Routes = [
 {
@@ -111,5 +112,12 @@ export const Routes = [
     route: "/appointment/:id",
     controller: AppointmentController,
     action: "remove"
+}
+// activity logs
+,{
+    method: "get",
+    route: "/logs",
+    controller: ActivityLogController,
+    action: "all"
 }
 ];

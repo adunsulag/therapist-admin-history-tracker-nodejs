@@ -1,7 +1,8 @@
-import {getRepository, Entity} from "typeorm";
+import {getRepository, Entity, getConnectionManager} from "typeorm";
 import {NextFunction, Request, Response} from "express";
 import {Therapist} from "../entity/Therapist";
 import { AuthService } from "../services/AuthService";
+import { ActivityLog } from "../entity/ActivityLog";
 
 export class TherapistController {
 
@@ -16,7 +17,7 @@ export class TherapistController {
         if (isNaN(id)) {
             throw new Error("Invalid id");
         }
-        return this.repository.findOne(id);
+        return this.getEntityWithAppointmentsAndLogs(id);
     }
 
     async save(request: Request, response: Response, next: NextFunction) {
@@ -36,7 +37,9 @@ export class TherapistController {
 
         console.log("Changing entity name from ", entity.name, " to ", name);
         entity.name = name;
-        return this.repository.save(entity);
+        return this.repository.save(entity).then(entity => {
+            return this.getEntityWithAppointmentsAndLogs(entity.id);
+        });
     }
 
     async create(request: Request, response: Response, next: NextFunction) {
@@ -46,7 +49,9 @@ export class TherapistController {
         }
         let entity = new Therapist();
         entity.name = name;
-        return this.repository.save(entity);
+        return this.repository.save(entity).then(entity => {
+            return this.getEntityWithAppointmentsAndLogs(entity.id);
+        });
     }
 
     async remove(request: Request, response: Response, next: NextFunction) {
@@ -63,4 +68,17 @@ export class TherapistController {
         console.log("Removed entity was ", removedEntity);
         return {};
     }
+
+    private getEntityWithAppointmentsAndLogs(id:number) {
+        let em = getConnectionManager().get().createEntityManager();
+        let repo = em.getRepository(Therapist);
+      
+        return repo.findOne(id, { relations: ["appointments"] })
+        .then(async (entity) => {
+            console.log("Retrieved logs");
+            entity.logs = await em.getRepository(ActivityLog).find({where: {tableName: "Therapist", tableId: id}});
+            return entity;
+        });
+    }
+
 }

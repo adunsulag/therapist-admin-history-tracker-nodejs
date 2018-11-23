@@ -7,13 +7,20 @@ import { SystemUser } from "../entity/SystemUser";
 
 @EventSubscriber()
 export class ActivityLogSubscriber implements EntitySubscriberInterface {
+    private DEBUG:boolean = false;
+
+    private debugLog(msg:string) {
+        if (this.DEBUG) {
+            console.log(msg);
+        }
+    }
     // private authService = new AuthService();
 
     /**
      * Called before entity insertion.
      */
     async afterInsert(event: InsertEvent<any>) {
-        console.log("inside afterInsert");
+        this.debugLog("inside afterInsert");
         if (this.shouldSkipEntity(event.entity)) {
             return;
         }
@@ -24,7 +31,7 @@ export class ActivityLogSubscriber implements EntitySubscriberInterface {
     }
 
     async beforeUpdate(event: UpdateEvent<any>) {
-        console.log("inside beforeUpdate");
+        this.debugLog("inside beforeUpdate");
         return Promise.resolve();
     }
 
@@ -32,7 +39,7 @@ export class ActivityLogSubscriber implements EntitySubscriberInterface {
      * Called before entity insertion.
      */
     async afterUpdate(event: UpdateEvent<any>) {
-        console.log("inside afterUpdate");
+        this.debugLog("inside afterUpdate");
         if (this.shouldSkipEntity(event.entity)) {
             return;
         }
@@ -45,7 +52,7 @@ export class ActivityLogSubscriber implements EntitySubscriberInterface {
     }
 
     async beforeRemove(event: RemoveEvent<any>) {
-        console.log("inside beforeRemove");
+        this.debugLog("inside beforeRemove");
         if (this.shouldSkipEntity(event.entity)) {
             return;
         }
@@ -58,8 +65,7 @@ export class ActivityLogSubscriber implements EntitySubscriberInterface {
 
     // TODO: stephen need to figure out why we aren't logging these entities.
     async afterLoad(entity: IAuditedEntity) {
-        console.log("inside afterLoad");
-        console.log(entity);
+        this.debugLog("inside afterLoad");
         // for now we will skip SELECT statements on the fact that the SystemUser was viewed
         // it creates a circular cycle that blows up the server.
         // TODO: stephen figure out a way to handle the circular dependency here with SystemUser
@@ -88,16 +94,16 @@ export class ActivityLogSubscriber implements EntitySubscriberInterface {
     private shouldSkipEntity(entity:any) {
         // TODO: stephen is there a better way to handle this?
         if (!(entity && entity.auditName)) {
-            console.log("skipping over entity");
+            this.debugLog("skipping over entity");
             return true;
         }
         else if (entity.hasOwnProperty('tableName') 
         || entity.hasOwnProperty('tableId')) {
-            console.log("skipping over entity");
+            this.debugLog("skipping over entity");
             return true;
         }
 
-        console.log("not skipping over entity");
+        this.debugLog("not skipping over entity");
         return false;
     }
     

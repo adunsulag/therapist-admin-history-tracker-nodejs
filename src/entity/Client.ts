@@ -2,6 +2,7 @@ import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne,
 import { SystemUser } from "./SystemUser";
 import { AuditedEntity } from "./AuditedEntity";
 import { Appointment } from "./Appointment";
+import { ActivityLog } from "./ActivityLog";
 
 @Entity()
 export class Client extends AuditedEntity {
@@ -18,6 +19,11 @@ export class Client extends AuditedEntity {
     @JoinColumn()
     @OneToMany(type => Appointment, appointment => appointment.client)
     appointments :Appointment[];
+
+     /**
+     * These are populated dynamically
+     */
+    logs:ActivityLog[];
     
     public auditName() : string {
         return "Client";
