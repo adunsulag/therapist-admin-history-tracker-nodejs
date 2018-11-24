@@ -4,27 +4,19 @@ import { TherapistController } from "./controller/TherapistController";
 import { AppointmentController } from "./controller/AppointmentController";
 import { ActivityLogController } from "./controller/ActivityLogController";
 
-export const Routes = [
+export const Routes: {method:string, route:string, controller:any, action:string, isOpen?:boolean}[] = [
 {
-    method: "get",
-    route: "/user",
+    method: "post",
+    route: "/user/login",
     controller: SystemUserController,
-    action: "all"
-}, {
-    method: "get",
-    route: "/user/:id",
-    controller: SystemUserController,
-    action: "one"
+    action: "login",
+    isOpen: true
 }, {
     method: "post",
-    route: "/user",
+    route: "/user/logout",
     controller: SystemUserController,
-    action: "save"
-}, {
-    method: "delete",
-    route: "/user",
-    controller: SystemUserController,
-    action: "remove"
+    action: "logout",
+    isOpen: true
 }
 // clients
 ,{

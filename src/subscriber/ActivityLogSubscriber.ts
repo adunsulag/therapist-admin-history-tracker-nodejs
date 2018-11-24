@@ -14,8 +14,7 @@ export class ActivityLogSubscriber implements EntitySubscriberInterface {
             console.log(msg);
         }
     }
-    // private authService = new AuthService();
-
+    
     /**
      * Called before entity insertion.
      */
@@ -56,7 +55,8 @@ export class ActivityLogSubscriber implements EntitySubscriberInterface {
         if (this.shouldSkipEntity(event.entity)) {
             return;
         }
-        let user = await (new AuthService()).getLoggedInSystemUser();
+        let service = AuthService.getInstance();
+        let user = service.getLoggedInSystemUser();
         let entity:IAuditedEntity = event.entity;
         // TODO: stephen see if we can get the columns that were impacted here
         let notes = entity.auditName() + "[" + entity.id +"] was updated by " + user.email;
@@ -75,7 +75,8 @@ export class ActivityLogSubscriber implements EntitySubscriberInterface {
         if ((entity.auditName && entity.auditName() == "SystemUser") || this.shouldSkipEntity(entity)) {
             return;
         }
-        let user = await (new AuthService()).getLoggedInSystemUser();
+        let service = AuthService.getInstance();
+        let user = service.getLoggedInSystemUser();
         let notes = entity.auditName() + "[" + entity.id +"] was viewed by " + user.email;
         return this.createLog("SELECT", notes, entity, getRepository(ActivityLog), user);
     }

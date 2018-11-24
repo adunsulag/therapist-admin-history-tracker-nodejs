@@ -23,32 +23,28 @@ export abstract class AuditedEntity implements IAuditedEntity {
     abstract auditName() : string;
 
     @BeforeInsert()
-    async __setCreationData()
+    __setCreationData()
     {
-        let service = new AuthService();
-        let user = await service.getLoggedInSystemUser();
+        let user = AuthService.getInstance().getLoggedInSystemUser();
         let date = new Date();
         this.setCreation(user, date);
         this.setLastUpdate(user, date);
-        return Promise.resolve();
     }
 
     @BeforeUpdate()
-    async __setUpdateData()
+    __setUpdateData()
     {
-        let service = new AuthService();
-        let user = await service.getLoggedInSystemUser();
+        let user = AuthService.getInstance().getLoggedInSystemUser();
         let date = new Date();
         this.setLastUpdate(user, date);
-        return Promise.resolve();
     }
 
-    public setLastUpdate(updater:SystemUser, date:Date) {
+    private setLastUpdate(updater:SystemUser, date:Date) {
         this.lastUpdatedBy = updater;
         this.lastUpdatedDate = date;
     }
 
-    public setCreation(creator:SystemUser, date:Date) {
+    private setCreation(creator:SystemUser, date:Date) {
         this.createdBy = creator;
         this.creationDate = date;
     }

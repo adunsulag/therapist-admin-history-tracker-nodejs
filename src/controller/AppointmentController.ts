@@ -1,7 +1,6 @@
 import {getRepository, Entity, getConnectionManager} from "typeorm";
 import {NextFunction, Request, Response} from "express";
 import {Appointment} from "../entity/Appointment";
-import { AuthService } from "../services/AuthService";
 import { Client } from "../entity/Client";
 import * as moment from "moment";
 import { Therapist } from "../entity/Therapist";

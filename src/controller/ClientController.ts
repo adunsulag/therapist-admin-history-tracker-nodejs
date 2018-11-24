@@ -1,7 +1,6 @@
 import {getRepository, Entity, getConnectionManager} from "typeorm";
 import {NextFunction, Request, Response} from "express";
 import {Client} from "../entity/Client";
-import { AuthService } from "../services/AuthService";
 import { ClientToDTO } from "../services/ClientToDTO";
 import { ActivityLog } from "../entity/ActivityLog";
 
