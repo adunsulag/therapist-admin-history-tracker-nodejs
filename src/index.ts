@@ -76,8 +76,9 @@ getConnectionOptions().then(async options => {
 	    // setup express app here
 	    // ...
 
-	    // start express server
-	    app.listen(3000);
+		// start express server
+		let port = process.env.port || 3000;
+	    app.listen(port);
 
 		// insert new users for test
 		let systemUser = Object.assign(new SystemUser(), {id: 1, email: 'stephen@nielson.org'});
