@@ -77,8 +77,9 @@ getConnectionOptions().then(async options => {
 	    // ...
 
 		// start express server
-		let port = process.env.port || 3000;
-	    app.listen(port);
+		let port = process.env.PORT || 3000;
+		app.listen(port);
+		console.log("Listening on port ", port);
 
 		// insert new users for test
 		let systemUser = Object.assign(new SystemUser(), {id: 1, email: 'stephen@nielson.org'});
@@ -100,8 +101,6 @@ getConnectionOptions().then(async options => {
 		// await connection.manager.save(connection.manager.create(Client, {
 		// 	name: "Test Client 2"
 		// }));
-
-	    console.log("Express server has started on port 3000. Open http://localhost:3000/users to see results");
 	});
 
 }).catch(error => console.log(error));
