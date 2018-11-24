@@ -73,9 +73,7 @@ export class ClientController {
 
     private getEntityWithAppointmentsAndLogs(id:number) {
         let em = getConnectionManager().get().createEntityManager();
-        // let repo = em.getRepository(Therapist);
-      
-        // TODO: stephen this operation is taking almost 6.5 seconds to complete!!! Need to optimize this.
+
         console.time("getClient");
         return em.createQueryBuilder()
         .select("client")
