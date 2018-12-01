@@ -22,7 +22,7 @@ export class ClientService {
   save(client:{id?:number, name:string}) {
     let url = "client/";
     if (client.id) {
-      url = url + "id";
+      url = url + client.id;
     }
     return this.httpService.post(url, {id: client.id, name: client.name})
     .then((resp) => {

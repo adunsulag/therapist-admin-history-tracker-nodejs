@@ -2128,7 +2128,7 @@ var ClientService = /** @class */ (function () {
     ClientService.prototype.save = function (client) {
         var url = "client/";
         if (client.id) {
-            url = url + "id";
+            url = url + client.id;
         }
         return this.httpService.post(url, { id: client.id, name: client.name })
             .then(function (resp) {
