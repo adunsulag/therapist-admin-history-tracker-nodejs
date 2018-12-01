@@ -2601,7 +2601,7 @@ var awsmobile = {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return environment; });
 var environment = {
     production: true,
-    apiUrl: 'https://blooming-river-95663.herokuapp.com/project1/server/'
+    apiUrl: '/api/v1/'
 };
 
 
