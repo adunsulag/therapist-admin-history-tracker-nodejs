@@ -1,0 +1,9 @@
+{
+    "bucketName": "client6c4d284790104a1c85ba6a0f621440bb",
+    "authPolicyName": "s3_amplify_58116597",
+    "unauthPolicyName": "s3_amplify_58116597",
+    "authRoleName": "client-20181019084236-authRole",
+    "unauthRoleName": "client-20181019084236-unauthRole",
+    "authPermissions": "rw",
+    "unauthPermissions": ""
+}

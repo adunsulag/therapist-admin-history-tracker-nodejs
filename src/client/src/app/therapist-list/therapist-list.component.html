@@ -1,0 +1,34 @@
+<h2>Therapists List</h2>
+<a [routerLink]="['/therapists', 'new']" class="btn btn-secondary">Add Therapist</a>
+<p *ngIf="!hasLoaded" class="alert alert-info">Loading data...</p>
+<table class="table table-striped" *ngIf="hasLoaded">
+  <thead>
+    <tr>
+      <th>
+        ID
+      </th>
+      <th>
+        Name
+      </th>
+      <th>Edit</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="therapists.length == 0">
+    <tr>
+      <td colspan="3">
+        <div class="alert alert-warning">No therapists exist in the system</div>
+      </td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr *ngFor="let therapist of therapists">
+      <td>{{therapist.id}}</td>
+      <td>{{therapist.name}}</td>
+      <td>
+        <button class="btn btn-sm btn-primary" [routerLink]="['/therapists', 'edit', therapist.id]">
+          <i class="fa fa-edit" aria-hidden="true" aria-label="View"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

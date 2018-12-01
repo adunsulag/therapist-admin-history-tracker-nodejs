@@ -1,0 +1,8 @@
+<h2>Appointments List</h2>
+<div class="row">
+    <div class="col-12">
+        <a [routerLink]="['/appointments', 'new']" class="btn btn-secondary">Schedule Appointment</a>
+    </div>
+</div>
+<p *ngIf="!hasLoaded" class="alert alert-info">Loading data...</p>
+<dac-appointment-list-table [appointments]="appointments" (deleteItem)="removeAppointment($event)" *ngIf="hasLoaded"></dac-appointment-list-table>

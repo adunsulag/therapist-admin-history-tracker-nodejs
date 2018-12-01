@@ -1,0 +1,52 @@
+{
+	"providers": {
+		"awscloudformation": {
+			"AuthRoleName": "client-20181019084236-authRole",
+			"UnauthRoleArn": "arn:aws:iam::244370771249:role/client-20181019084236-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::244370771249:role/client-20181019084236-authRole",
+			"Region": "us-east-1",
+			"DeploymentBucketName": "client-20181019084236-deployment",
+			"UnauthRoleName": "client-20181019084236-unauthRole",
+			"StackName": "client-20181019084236",
+			"StackId": "arn:aws:cloudformation:us-east-1:244370771249:stack/client-20181019084236/74fb8640-d39c-11e8-8afc-500c289032fe"
+		}
+	},
+	"auth": {
+		"cognitocabb03f2": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"[object Object]": {},
+			"lastPushTimeStamp": "2018-10-19T13:29:36.666Z",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/client-20181019084236-deployment/amplify-cfn-templates/auth/cognitocabb03f2-cloudformation-template.yml",
+				"logicalId": "authcognitocabb03f2"
+			},
+			"output": {
+				"AppClientSecret": "ae56e2d2b8g4l1a6s2oicb56p98nk01542so3lksanfj3uncfo6",
+				"UserPoolId": "us-east-1_s9iDqPquj",
+				"AppClientIDWeb": "1271f4r7a3f24kk53j6emll9nb",
+				"AppClientID": "76cisnvnavnt0dleppiaeapoji",
+				"IdentityPoolId": "us-east-1:0c4629df-3bcc-49b5-be6e-5861d5283b56",
+				"IdentityPoolName": "cognitocabb03f2_identitypool_cabb03f2",
+				"UserPoolName": "cognitocabb03f2_userpool_cabb03f2"
+			},
+			"lastPushDirHash": "gNPv/vtAAkRsBiotQFuwZEotZyA="
+		}
+	},
+	"storage": {
+		"s358116597": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/client-20181019084236-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
+				"logicalId": "storages358116597"
+			},
+			"lastPushTimeStamp": "2018-10-19T13:29:36.666Z",
+			"output": {
+				"BucketName": "client6c4d284790104a1c85ba6a0f621440bb",
+				"Region": "us-east-1"
+			},
+			"lastPushDirHash": "rJRfwIRD1grOpiESi1lH3oMLuxc="
+		}
+	}
+}

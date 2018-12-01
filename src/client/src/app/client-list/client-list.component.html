@@ -1,0 +1,30 @@
+<h2>Clients List</h2>
+<p *ngIf="!hasLoaded" class="alert alert-info">Loading client data...</p>
+<a [routerLink]="['/clients', 'new']" class="btn btn-secondary">Add Client</a>
+<table class="table table-striped" *ngIf="hasLoaded">
+  <thead>
+    <tr>
+      <th>
+        ID
+      </th>
+      <th>
+        Name
+      </th>
+      <th>Edit</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="clients.length == 0">
+    <tr>
+      <td colspan="3">
+        <div class="alert alert-warning">No clients exist in the system</div>
+      </td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr *ngFor="let client of clients">
+      <td>{{client.id}}</td>
+      <td>{{client.name}}</td>
+      <td><button class="btn btn-sm btn-primary" [routerLink]="['/clients', 'edit', client.id]"><i class="fa fa-edit" aria-hidden="true" aria-label="View" ></i></button></td>
+    </tr>
+  </tbody>
+</table>

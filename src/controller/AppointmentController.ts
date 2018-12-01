@@ -4,6 +4,7 @@ import {Appointment} from "../entity/Appointment";
 import { Client } from "../entity/Client";
 import * as moment from "moment";
 import { Therapist } from "../entity/Therapist";
+import { AppointmentToDTO } from "../services/AppointmentToDTO";
 
 export class AppointmentController {
 
@@ -22,15 +23,7 @@ export class AppointmentController {
     }
 
     private toDTO(appt:Appointment) {
-        return {
-            id: appt.id
-            ,clientID: appt.client.id
-            ,clientName: appt.client.name
-            ,therapistID: appt.therapist.id
-            ,therapistName: appt.therapist.name
-            ,startDate: appt.startDate
-            ,endDate: appt.endDate
-        };
+        return AppointmentToDTO.toDTO(appt);
     }
 
     async save(request: Request, response: Response, next: NextFunction) {
@@ -66,7 +59,7 @@ export class AppointmentController {
             throw new Error("Invalid therapistID");
         }
        
-        if (!['Pending', 'NoShow', 'Canceled', 'Completed'].find(s => s == status)) {
+        if (!['pending', 'noshow', 'canceled', 'completed'].find(s => s == status)) {
             throw new Error("Invalid status");
         }
 
@@ -101,9 +94,10 @@ export class AppointmentController {
             throw new Error("Invalid therapistID");
         }
        
-        if (!['Pending', 'NoShow', 'Canceled', 'Completed'].find(s => s == status)) {
+        if (!['pending', 'noshow', 'canceled', 'completed'].find(s => s == status)) {
             throw new Error("Invalid status");
         }
+
 
         Object.assign(entity, {client: client, therapist: therapist, startDate: startDate, endDate: endDate, status: status});
         return this.repository.save(entity).then(entity => this.toDTO(entity));

@@ -10,6 +10,7 @@ export class AppointmentToDTO {
             ,therapistID: appt.therapist.id
             ,therapistName: appt.therapist.name
             ,startDate: appt.startDate
+            ,status: appt.status
             ,endDate: appt.endDate
         };
     }

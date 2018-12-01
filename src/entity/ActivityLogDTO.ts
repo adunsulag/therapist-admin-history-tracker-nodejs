@@ -4,4 +4,5 @@ export class ActivityLogDTO {
     tableID:number
     notes:string;
     systemUserEmail:string;
+    action:string;
 }

@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col-10"><h2>Editing Appointment {{editItem.id}}</h2></div>
+    <div class="col-2"><a [routerLink]="['/appointments']">Back to list</a></div>
+  </div>
+  <p *ngIf="!hasLoaded" class="alert alert-info">Loading data...</p>
+  <div *ngIf="hasLoaded">
+    <form class="card card-body mb-3">
+      <h3>Appointments Profile</h3>
+      <label>
+        Start Date:
+        <input type="text" class="form-control" name="startDate" [(ngModel)]="editItem.startDate" />
+        <p class="alert alert-danger" *ngIf="startDateInvalid">Date must not be empty and be of the format YYYY-MM-DD hh:mm</p>
+      </label>
+      <label>
+          End Date:
+          <input type="text" class="form-control" name="endDate" [(ngModel)]="editItem.endDate" />
+          <p class="alert alert-danger" *ngIf="endDateInvalid">Date must not be empty and be of the format YYYY-MM-DD hh:mm.  End date must be greater than start date.</p>
+        </label>
+        <label>
+            Status:
+            <select name="status" [(ngModel)]="editItem.status" class="browser-default custom-select w-100">
+              <option [value]="status" *ngFor="let status of statii">{{status}}</option>
+            </select>
+            <p class="alert alert-danger" *ngIf="statusInvalid">You must select a status to save this appointment.</p>   
+          </label>
+          <label>
+              Therapist:
+              <select name="therapist" [(ngModel)]="editItem.therapistID" class="browser-default custom-select w-100">
+                <option [value]="therapist.id" *ngFor="let therapist of therapists">{{therapist.name}}</option>
+                <p class="alert alert-danger" *ngIf="therapistInvalid">You must select a therapist to save this appointment.</p>
+              </select>
+            </label>
+            <label>
+                Client:
+                <select name="client" [(ngModel)]="editItem.clientID" class="browser-default custom-select w-100">
+                  <option [value]="client.id" *ngFor="let client of clients">{{client.name}}</option>
+                  <p class="alert alert-danger" *ngIf="clientInvalid">You must select a client to save this appointment.</p>
+                </select>
+              </label>
+              <div class="row">
+                <div class="col">
+                  <a (click)="save()" class="btn btn-primary">Save</a>
+                </div>
+              </div>
+    </form>
+  </div>

@@ -1,0 +1,23 @@
+<h2>Activity Log</h2>
+<form>
+  <label>
+    Entity
+    <select name="filter" [(ngModel)]="searchFilter.entity" class="browser-default custom-select">
+      <option [value]="entity" *ngFor="let entity of entities">{{entity}}</option>
+    </select>
+  </label>
+  <label>
+      Action
+      <select name="filter" [(ngModel)]="searchFilter.action" class="browser-default custom-select">
+        <option [value]="action" *ngFor="let action of actions">{{action}}</option>
+      </select>
+    </label>
+    <label>
+      ID
+      <input type="number" name="entityID" [(ngModel)]="searchFilter.entityID" />
+    </label>
+  <input type="button" (click)="filter()" value="Filter" class="btn btn-primary" />
+  <input type="button" (click)="reset()" value="Reset" class="btn btn-secondary" />
+</form>
+<p *ngIf="!hasLoaded" class="alert alert-info">Loading data...</p>
+<dac-activitylog-table [logs]="logs" *ngIf="hasLoaded"></dac-activitylog-table>

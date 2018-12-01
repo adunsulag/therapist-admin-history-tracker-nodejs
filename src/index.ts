@@ -40,9 +40,11 @@ getConnectionOptions().then(async options => {
 			}
 			next();
 		});
+		app.use('/client', express.static('src/client/dist/'));
 	    // register express routes from defined application routes
 	    Routes.forEach(route => {
-		(app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
+			console.log("registering " + "/api/v1" + route.route);
+		(app as any)[route.method]("/api/v1" + route.route, (req: Request, res: Response, next: Function) => {
 			let result;
 			if (route.isOpen === true || req.loggedInUser) {
 				result = (new (route.controller as any))[route.action](req, res, next);
@@ -71,7 +73,12 @@ getConnectionOptions().then(async options => {
 				res.json({error: "You must be logged in to access this resouce"});
 			}
 		});
-	    });
+		});
+		app.use(function(req, res, next) {
+			// route all subsequent requests to index so the router can handle it properly.
+			res.sendFile(__dirname + "/client/dist/index.html");
+		})
+	
 
 	    // setup express app here
 	    // ...

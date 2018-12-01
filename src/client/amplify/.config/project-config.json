@@ -1,0 +1,20 @@
+{
+    "projectName": "client",
+    "projectPath": "/projects/cs313-php/web/project1/client",
+    "defaultEditor": "code",
+    "frontendHandler": {
+        "javascript": "/home/stephen/.nvm/versions/node/v8.10.0/lib/node_modules/@aws-amplify/cli/node_modules/amplify-frontend-javascript"
+    },
+    "javascript": {
+        "framework": "angular",
+        "config": {
+            "SourceDir": "src",
+            "DistributionDir": "dist",
+            "BuildCommand": "npm run-script build",
+            "StartCommand": "ng serve"
+        }
+    },
+    "providers": {
+        "awscloudformation": "/home/stephen/.nvm/versions/node/v8.10.0/lib/node_modules/@aws-amplify/cli/node_modules/amplify-provider-awscloudformation"
+    }
+}

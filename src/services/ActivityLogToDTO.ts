@@ -7,6 +7,7 @@ export class ActivityLogToDTO {
             date: l.creationDate
             ,tableName: l.tableName
             ,tableID: l.tableId
+            ,action: l.action
             ,notes: l.notes
             ,systemUserEmail: l.createdBy ? l.createdBy.email : "<createdBy Missing>"
         };

@@ -1,0 +1,46 @@
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>
+          ID
+        </th>
+        <th>
+          Start Date
+        </th>
+        <th>
+            End Date
+          </th>
+          <th>
+              Status
+            </th>
+            <th>Client</th>
+            <th>Therapist</th>
+            <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="Appointments.length == 0">
+      <tr>
+        <td colspan="7">
+          <div class="alert alert-warning">No appointments exist</div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr *ngFor="let appt of Appointments">
+        <td>{{appt.id}}</td>
+        <td>{{appt.startDate | date: 'medium'}}</td>
+        <td>{{appt.endDate | date: 'medium'}}</td>
+        <td>{{appt.status}}</td>
+        <td><h5><a class="badge badge-info" [routerLink]="['/clients', 'edit', appt.clientID]">{{appt.clientName}}</a></h5></td>
+        <td><h5><a class="badge badge-info" [routerLink]="['/therapists', 'edit', appt.therapistID]">{{appt.therapistName}}</a></h5></td>
+        <td>
+            <button class="btn btn-sm btn-primary" [routerLink]="['/appointments', 'edit', appt.id]">
+              <i class="fa fa-edit" aria-hidden="true" aria-label="View"></i>
+            </button>
+            <button class="btn btn-sm btn-secondary" (click)="delete(appt)">
+              <i class="fa fa-trash" aria-hidden="true" aria-label="Delete"></i>
+            </button>
+          </td>
+      </tr>
+    </tbody>
+  </table>

@@ -4,6 +4,7 @@ export class AppointmentDTO {
     clientName: string
     therapistID: number
     therapistName: string
+    status:string
     startDate: Date
     endDate: Date
 }

@@ -1,0 +1,34 @@
+<div class="row">
+    <div class="col-10"><h2>Editing Therapist {{editItem.id}}</h2></div>
+    <div class="col-2"><a [routerLink]="['/therapists']">Back to list</a></div>
+  </div>
+  <p *ngIf="!hasLoaded" class="alert alert-info">Loading data...</p>
+  <div *ngIf="hasLoaded">
+    <form class="card card-body mb-3">
+      <h3>Therapist Profile</h3>
+      <label>
+        Name:
+        <input type="text" class="form-control" name="name" [(ngModel)]="editItem.name" />
+        <p class="alert alert-danger" *ngIf="nameInvalid">Name cannot be empty</p>
+      </label>
+      <div class="row">
+        <div class="col">
+          <a (click)="save()" class="btn btn-primary">Save</a>
+        </div>
+      </div>
+    </form>
+    <div class="card card-body mb-3">
+      <h3>Appointments</h3>
+      <div class="row">
+        <div class="col-12">
+            <a [routerLink]="['/appointments', 'new']" [queryParams]="{ therapist: editItem.id}" class="btn btn-secondary">Schedule Appointment</a>
+        </div>
+      </div>
+      
+      <dac-appointment-list-table [appointments]="editItem.appointments" (deleteItem)="removeAppointment($event)"></dac-appointment-list-table>
+    </div>
+    <div class="card card-body mb-3">
+      <h3>Activity Log</h3>
+      <dac-activitylog-table [logs]="editItem.logs"></dac-activitylog-table>
+    </div>
+  </div>
