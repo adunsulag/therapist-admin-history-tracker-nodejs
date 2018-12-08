@@ -7,4 +7,4 @@ Steps to run this project:
 3. Run `npm start` command
 
 In order to run the type-orm cli tools use the commands in the node-module and run it through ts-node.
-./node_modules/.bin/ts-node ./node_modules/.bin/typeorm --help
+`./node_modules/.bin/ts-node ./node_modules/.bin/typeorm --help`

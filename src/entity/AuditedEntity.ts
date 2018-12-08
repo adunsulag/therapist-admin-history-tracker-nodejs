@@ -21,6 +21,7 @@ export abstract class AuditedEntity implements IAuditedEntity {
 
     abstract id:number;
     abstract auditName() : string;
+    abstract getEntityDescription() : string;
 
     @BeforeInsert()
     __setCreationData()

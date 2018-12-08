@@ -26,4 +26,15 @@ export class Therapist extends AuditedEntity {
     public auditName() : string {
         return "Therapist";
     }
+
+    public getEntityDescription() : string {
+        let description = "Therapist[id=" + this.id + ",isActive=" + this.isActive;
+        if (this.appointments && this.appointments.length) {
+            description += ",appointments=[" + this.appointments.map(a => a.id).join(",") + "]";
+        }
+        if (this.name) {
+            description += ",name=" + this.name;
+        }
+        return description + "]";
+    }
 }

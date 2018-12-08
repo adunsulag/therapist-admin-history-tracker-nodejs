@@ -33,4 +33,24 @@ export class Appointment extends AuditedEntity {
     public auditName() : string {
         return "Appointment";
     }
+
+    public getEntityDescription() : string {
+        let description = "Appointment[id=" + this.id + ",isActive=" + this.isActive;
+        if (this.startDate) {
+            description += ",startDate=" + this.startDate;
+        }
+        if (this.endDate) {
+            description += ",endDate=" + this.endDate;
+        }
+        if (this.status) {
+            description += ",status=" + this.status;
+        }
+        if (this.therapist) {
+            description += ",therapist=" + this.therapist.id + ";name=" + this.therapist.name;
+        }
+        if (this.client) {
+            description += ",client=" + this.client.id + ";name=" + this.client.name;
+        }
+        return description + "]";
+    }
 }

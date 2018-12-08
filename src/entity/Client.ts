@@ -28,4 +28,15 @@ export class Client extends AuditedEntity {
     public auditName() : string {
         return "Client";
     }
+
+    public getEntityDescription() : string {
+        let description = "Client[id=" + this.id + ",isActive=" + this.isActive;
+        if (this.appointments && this.appointments.length) {
+            description += ",appointments=[" + this.appointments.map(a => a.id).join(",") + "]";
+        }
+        if (this.name) {
+            description += ",name=" + this.name;
+        }
+        return description + "]";
+    }
 }

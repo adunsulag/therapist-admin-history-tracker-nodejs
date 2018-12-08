@@ -24,8 +24,7 @@ export class ActivityLogSubscriber implements EntitySubscriberInterface {
             return;
         }
         let entity:IAuditedEntity = event.entity;
-        // TODO: stephen see if we can get the columns that were impacted here
-        let notes = entity.auditName() + "[" + entity.id +"] was inserted by " + entity.createdBy.email;
+        let notes = entity.getEntityDescription() + " was inserted by " + entity.createdBy.getEntityDescription();
         return this.createLog("INSERT", notes, entity, event.manager.getRepository(ActivityLog));
     }
 
@@ -43,10 +42,8 @@ export class ActivityLogSubscriber implements EntitySubscriberInterface {
             return;
         }
         let entity:IAuditedEntity = event.entity;
-        // TODO: stephen see if we can get the columns that were impacted here
-        // TODO: stephen see why the email is failing here sometimes to be found.
-        let email = entity.lastUpdatedBy ? entity.lastUpdatedBy.email : "<createdBy missing>";
-        let notes = entity.auditName() + "[" + entity.id +"] was updated by " + email;
+        let lastUpdatedBy = entity.lastUpdatedBy ? entity.lastUpdatedBy.getEntityDescription() : "<lastUpdatedBy missing>";
+        let notes = entity.getEntityDescription() + " was updated by " + lastUpdatedBy;
         return this.createLog("UPDATE", notes, entity, event.manager.getRepository(ActivityLog));
     }
 
@@ -58,26 +55,20 @@ export class ActivityLogSubscriber implements EntitySubscriberInterface {
         let service = AuthService.getInstance();
         let user = service.getLoggedInSystemUser();
         let entity:IAuditedEntity = event.entity;
-        // TODO: stephen see if we can get the columns that were impacted here
-        let notes = entity.auditName() + "[" + entity.id +"] was updated by " + user.email;
+        let notes = entity.getEntityDescription() + " was updated by " + user.getEntityDescription();
         return this.createLog("DELETE", notes, entity, event.manager.getRepository(ActivityLog), user);
     }
 
-    // TODO: stephen need to figure out why we aren't logging these entities.
     async afterLoad(entity: IAuditedEntity) {
         this.debugLog("inside afterLoad");
         // for now we will skip SELECT statements on the fact that the SystemUser was viewed
         // it creates a circular cycle that blows up the server.
-        // TODO: stephen figure out a way to handle the circular dependency here with SystemUser
-        // we still want to see SELECT statements with SystemUser
-        // if it's a proxy object it will just have the format of {id: <number>} which doesn't match the interface...
-        // not sure why they don't hydrate a full object... seems wierd.
         if ((entity.auditName && entity.auditName() == "SystemUser") || this.shouldSkipEntity(entity)) {
             return;
         }
         let service = AuthService.getInstance();
         let user = service.getLoggedInSystemUser();
-        let notes = entity.auditName() + "[" + entity.id +"] was viewed by " + user.email;
+        let notes = entity.getEntityDescription() + " was viewed by " + user.getEntityDescription();
         return this.createLog("SELECT", notes, entity, getRepository(ActivityLog), user);
     }
 

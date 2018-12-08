@@ -34,6 +34,14 @@ export class SystemUser implements IAuditedEntity {
     auditName(): string {
         return "SystemUser";
     }
+
+    public getEntityDescription() : string {
+        let description = "SystemUser[id=" + this.id + ",identityId=" + this.identityId + ",active=" + this.active;
+        if (this.email) {
+            description += ",email=" + this.email;
+        }
+        return description + "]";
+    }
     
 
 }
