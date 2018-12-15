@@ -46,6 +46,29 @@
     ,.amplify-form-action {
         margin-bottom: 20px;
     }
+    .amplify-alert {
+        padding: .75rem 1.25rem;
+        margin-bottom: 1rem;
+        border: 1px solid transparent;
+        border-radius: .25rem;
+        background-color: #f2dede;
+        border-color: #ebcccc;
+        color: #a94442;
+        margin-top: 1rem;
+        position: relative;
+
+        .amplify-alert-icon {
+            float: left;
+            margin: 0 .5em;
+        }
+
+        .amplify-alert-close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 1em;
+        }
+    }
 }
 .mydp-picker {
     z-index: 0;
