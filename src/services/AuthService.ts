@@ -3,18 +3,25 @@ import { SystemUser } from "../entity/SystemUser";
 import { Request } from "../types/request";
 import { userInfo } from "os";
 
+import * as https from 'https';
+import * as jose from 'node-jose';
+
 export class AuthService {
     private repository = getRepository(SystemUser);
     private request:Request;
     private appUser:SystemUser;
     private loggedInUser:SystemUser;
     static $instance:AuthService;
+    static REGION = 'us-east-1';
+    static USERPOOL_ID = 'us-east-1_s9iDqPquj';
+    static APP_CLIENT_ID = '1271f4r7a3f24kk53j6emll9nb';
+    static KEYS_URL = 'https://cognito-idp.' + AuthService.REGION + '.amazonaws.com/' 
+    + AuthService.USERPOOL_ID + '/.well-known/jwks.json';
 
     constructor() {
     }
 
-    // TODO: stephen I don't like the singleton here... but without a DI container I'm going to use this pattern
-    // TODO: stephen change this out if we decide to incorporate a DI system.
+    // We use the singleton here... but without a DI container I'm going to use this pattern
     static getInstance() {
        return AuthService.$instance;
     }
@@ -25,6 +32,62 @@ export class AuthService {
         AuthService.$instance = new AuthService();
         await AuthService.$instance.init(req);
         return AuthService.$instance;
+    }
+
+    async verifyPayload(claims:any, token:string) {
+        return new Promise((resolve, reject) => {
+            console.log("Attempting to verify token: ", token)
+            var sections = token.split('.');
+            // get the kid from the headers prior to verification
+            var header = jose.util.base64url.decode(sections[0]);
+            header = JSON.parse(header);
+            var kid = header.kid;
+            // download the public keys
+            https.get(AuthService.KEYS_URL, function(response) {
+                if (response.statusCode == 200) {
+                    response.on('data', function(body:any) {
+                        var keys = JSON.parse(body)['keys'];
+                        // search for the kid in the downloaded public keys
+                        var key_index = -1;
+                        for (var i=0; i < keys.length; i++) {
+                                if (kid == keys[i].kid) {
+                                    key_index = i;
+                                    break;
+                                }
+                        }
+                        if (key_index == -1) {
+                            console.log('Public key not found in jwks.json');
+                            reject(new Error('Public key not found in jwks.json'));
+                        }
+                        // construct the public key
+                        jose.JWK.asKey(keys[key_index]).
+                        then(function(result) {
+                            // verify the signature
+                            jose.JWS.createVerify(result).
+                            verify(token).
+                            then(function(result) {
+                                // now we can use the claims
+                                // additionally we can verify the token expiration
+                                var current_ts = Math.floor(new Date().getTime() / 1000);
+                                if (current_ts > claims.exp) {
+                                    reject(new Error('Token is expired'));
+                                }
+                                // and the Audience (use claims.client_id if verifying an access token)
+                                if (claims.aud != AuthService.APP_CLIENT_ID) {
+                                    reject(new Error('Token was not issued for this audience'));
+                                }
+                                console.log("Token was valid.  Return auth result");
+                                resolve(claims);
+                                // callback(null, claims);
+                            }).
+                            catch(function() {
+                                reject(new Error('Signature verification failed'));
+                            });
+                        });
+                    });
+                }
+            });
+        });
     }
 
     async init(request:Request) : Promise<{appUser: SystemUser, loggedInUser: SystemUser|null}> {

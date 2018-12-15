@@ -84,7 +84,6 @@ export class ActivityLogSubscriber implements EntitySubscriberInterface {
     }
 
     private shouldSkipEntity(entity:any) {
-        // TODO: stephen is there a better way to handle this?
         if (!(entity && entity.auditName)) {
             this.debugLog("skipping over entity");
             return true;

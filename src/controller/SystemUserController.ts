@@ -13,40 +13,48 @@ export class SystemUserController {
 
         let payload = request.body.payload || {};
         let email =  payload.email;
-        let eventID = payload.event_id;
+        let subjectId = payload.sub;
 
         if (!email) {
             throw new Error("Email parameter is missing");
         }
-        if (!eventID) {
-            throw new Error("Invalid event_id");
+        if (!subjectId) {
+            throw new Error("Invalid sub");
         }
 
-        let user = await this.userRepository.findOne({where: {identityId: eventID}});
-        let userId;
-        if (!user) {
-            // need to create the user from the amazon identity service
-            // TODO: stephen need to verify the AWS payload came from Amazon.
-            user = new SystemUser();
-            user.identityId = eventID;
-            user.createdBy =  request.applicationUser;
-            user.creationDate = new Date();
-            user.lastUpdatedBy = user.createdBy;
-            user.lastUpdatedDate = user.creationDate;
-            user.email = email;
-            let updatedUser = await this.userRepository.save(user);
-            userId = updatedUser.id;
-        }
-        else {
-            userId = user.id;
-        }
-        AuthService.getInstance().setLoggedInUser(user);
-        request.session['loggedIn'] = true;
-        request.session['systemUserId'] = userId;
-        // need to stuff everything into the session
+        // need to verify the jwtToken
+        return AuthService.getInstance().verifyPayload(payload, request.body.jwtToken)
+        .then(async (success) => {
+            console.log("Attempting to find user");
+            let user = await this.userRepository.findOne({where: {identityId: subjectId}});
+            let userId;
+            if (!user) {
+                console.log("Did not find user, creating account");
+                user = new SystemUser();
+                user.identityId = subjectId;
+                user.createdBy =  request.applicationUser;
+                user.creationDate = new Date();
+                user.lastUpdatedBy = user.createdBy;
+                user.lastUpdatedDate = user.creationDate;
+                user.email = email;
+                let updatedUser = await this.userRepository.save(user);
+                userId = updatedUser.id;
+            }
+            else {
+                userId = user.id;
+            }
+            console.log("Logging in user");
+            AuthService.getInstance().setLoggedInUser(user);
+            request.session['loggedIn'] = true;
+            request.session['systemUserId'] = userId;
 
-        return {id: userId};
-
+            console.log("Returning user id: ", userId);
+            return {id: userId};
+        })
+        .catch((error) => {
+            console.error("Failed to veify payload for request");
+            throw error;
+        });
     }
 
     async logout(request: Request, response: Response, next: NextFunction) {
